@@ -19,7 +19,7 @@ export class AuthService {
 
         if(existingUser) return 'Email taken.';
         
-        const hashedPassword = await bcrypt.hash(password)
+        const hashedPassword = await bcrypt.hash(password, 12);
 
         const newUser = await this.userService.create(username, email, hashedPassword);
 

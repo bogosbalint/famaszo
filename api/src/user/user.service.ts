@@ -26,6 +26,18 @@ export class UserService {
         return this.getUserDetails(user);
     }
 
+    async findAll(): Promise<UserDocument[]> {
+        return this.userModel.find().exec();
+    }
+
+    async isTheUserExists(id: string): Promise<boolean> {
+        const user = await this.userModel.findById(id).exec();
+        console.log("user");
+        console.log(user);
+        if(!user) return false;
+        return true;
+    }
+
     async create(username: string, email: string, password: string): Promise<UserDocument> {
         const newUser = new this.userModel({username, email, password});
 
