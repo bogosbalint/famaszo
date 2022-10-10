@@ -11,7 +11,7 @@ export class UserService {
     getUserDetails(user: UserDocument): IUser {
         return {
             id: user._id,
-            name: user.username,
+            username: user.username,
             email:user.email
         }
     }
@@ -32,8 +32,6 @@ export class UserService {
 
     async isTheUserExists(id: string): Promise<boolean> {
         const user = await this.userModel.findById(id).exec();
-        console.log("user");
-        console.log(user);
         if(!user) return false;
         return true;
     }
@@ -42,5 +40,17 @@ export class UserService {
         const newUser = new this.userModel({username, email, password});
 
         return newUser.save();
+    }
+
+    async update(id: string, username: string): Promise<UserDocument> {
+        let existingUser = await this.userModel.findById(id).exec();
+
+        existingUser.username = username ?? existingUser.username;
+    
+        return existingUser.save();
+    }
+
+    async delete(id: string) {
+        return this.userModel.deleteOne({ _id: id }).exec();
     }
 }

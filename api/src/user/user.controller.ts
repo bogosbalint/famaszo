@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import { IUser } from './user.interface';
 import { UserDocument } from './user.schema';
 import { UserService } from './user.service';
@@ -15,6 +15,16 @@ export class UserController {
     @Get()
     getAllUser(): Promise<UserDocument[]> {
         return this.userService.findAll();
+    }
+
+    @Patch(':id')
+    update(@Param('id') id: string, @Body('question') username: string): Promise<UserDocument> {
+        return this.userService.update(id, username);
+    }
+
+    @Delete(':id')
+    deleteQuestion(@Param('id') id: string) {
+        return this.userService.delete(id);
     }
 
 }

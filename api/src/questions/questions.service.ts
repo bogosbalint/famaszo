@@ -17,9 +17,7 @@ export class QuestionsService {
         const {question, answer, user_id} = createQuestion;
 
         const bool = await this.userService.isTheUserExists(user_id);
-        console.log("bool");
-        console.log(bool);
-
+        
         if(!bool) {
             throw new HttpException('This user does not exists', HttpStatus.FORBIDDEN)
         }
