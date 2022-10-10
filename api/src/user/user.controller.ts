@@ -18,7 +18,7 @@ export class UserController {
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body('question') username: string): Promise<UserDocument> {
+    update(@Param('id') id: string, @Body('username') username: string): Promise<UserDocument> {
         return this.userService.update(id, username);
     }
 

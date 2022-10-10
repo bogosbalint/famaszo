@@ -23,6 +23,11 @@ export class ScoreController {
         return this.scoreService.findById(id);
     }
 
+    @Patch(':id')
+    update(@Param('id') id: string, @Body('username') username: string): Promise<ScoreDocument> {
+        return this.scoreService.update(id, username);
+    }
+
     @Delete(':id')
     deleteQuestion(@Param('id') id: string) {
         return this.scoreService.delete(id);

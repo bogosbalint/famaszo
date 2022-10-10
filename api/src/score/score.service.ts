@@ -24,6 +24,16 @@ export class ScoreService {
         return this.scoreModel.findById(id).exec();
     }
 
+    async update(id: string, username: string): Promise<ScoreDocument> {
+        let existingScore = await this.scoreModel.findById(id).exec();
+
+        console.log(existingScore);
+
+        existingScore.username = username ?? existingScore.username;
+
+        return existingScore.save();
+    }
+
     async delete(id: string) {
         return this.scoreModel.deleteOne({_id: id}).exec();
     }
