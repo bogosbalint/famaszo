@@ -21,7 +21,9 @@ export class AuthService {
         
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        const newUser = await this.userService.create(username, email, hashedPassword);
+        const roles = ['user'];
+
+        const newUser = await this.userService.create(username, email, hashedPassword, roles);
 
         return this.userService.getUserDetails(newUser);
     }
