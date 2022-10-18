@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
-import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { CreateScoreDTO } from './dto/new-score.dto';
 import { ScoreDocument } from './score.schema';
 import { ScoreService } from './score.service';

@@ -3,7 +3,7 @@ import { CreateQuestionDTO } from './dto/create-question.dto';
 import { QuestionsService } from './questions.service';
 import { QuestionDocument } from './question.schema';
 import { UpdateQuestionDTO } from './dto/update-question.dto';
-import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
 
 @Controller('questions')
 export class QuestionsController {

@@ -10,8 +10,6 @@ import { UserService } from 'src/user/user.service';
 export class AuthService {
     constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}
 
-    
-
     async register(user: Readonly<NewUserDTO>): Promise<IUser | any> {
         const {username, email, password} = user;
 
@@ -45,6 +43,8 @@ export class AuthService {
         const user = await this.verify(email, password);
 
         if(!user) return null;
+
+        console.log(user);
 
         const jwt = await this.jwtService.signAsync({ user });
 
