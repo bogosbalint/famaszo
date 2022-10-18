@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { Role } from 'src/roles/roles.enum';
 import { RoleGuard } from 'src/auth/guards/roles.guard';
 import { IUser } from './user.interface';
 import { UserDocument } from './user.schema';
@@ -12,17 +11,17 @@ import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 export class UserController {
     constructor(private userService: UserService) {}
 
-    @UseGuards(JwtGuard)
-    @Get(':id')
-    getUser(@Param(':id') id: string): Promise<IUser | null> {
-        return this.userService.findById(id);
-    }
-
     @Roles('admin')
-    @UseGuards(JwtGuard, RoleGuard)
+    @UseGuards(JwtGuard)
     @Get()
     getAllUser(): Promise<UserDocument[]> {
         return this.userService.findAll();
+    }
+
+    @UseGuards(JwtGuard)
+    @Get(':id')
+    getUser(@Param('id') id: string): Promise<IUser | null> {
+        return this.userService.findById(id);
     }
 
     @UseGuards(JwtGuard)

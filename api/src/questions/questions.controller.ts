@@ -16,13 +16,11 @@ export class QuestionsController {
         return this.questionService.create(question);
     }
 
-    @UseGuards(JwtGuard)
     @Get()
     getAllQuestion(): Promise<QuestionDocument[]>  {
         return this.questionService.findAll();
     }
-
-    @UseGuards(JwtGuard)
+    
     @Get(':id')
     getQuestion(@Param('id') id: string): Promise<QuestionDocument> {
         return this.questionService.findById(id);

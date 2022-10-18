@@ -21,6 +21,7 @@ export class ScoreController {
 
     @Get(':id')
     getScore(@Param('id') id: string): Promise<ScoreDocument> {
+        console.log(id)
         return this.scoreService.findById(id);
     }
 

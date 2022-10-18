@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { ExistingUserDTO } from 'src/user/dto/existing-user.dto';
 import { NewUserDTO } from 'src/user/dto/new-user.dto';
 import { IUser } from 'src/user/user.interface';
+import { UserDocument } from 'src/user/user.schema';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
@@ -49,5 +50,9 @@ export class AuthService {
         const jwt = await this.jwtService.signAsync({ user });
 
         return {token: jwt};
+    }
+
+    async findByEmail(email: string): Promise<UserDocument | null> {
+        return this.userService.findByEmail(email);
     }
 }
