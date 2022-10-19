@@ -52,7 +52,11 @@ export class AuthService {
         return {token: jwt};
     }
 
-    async findByEmail(email: string): Promise<UserDocument | null> {
+    async profile(email: string): Promise<UserDocument | null> {
         return this.userService.findByEmail(email);
+    }
+
+    async update(id: string, username: string): Promise<UserDocument> {
+        return this.userService.update(id, username);
     }
 }
