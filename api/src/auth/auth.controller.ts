@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Patch, Post, UseGuards } from '@nestjs/common';
 import { ExistingUserDTO } from 'src/user/dto/existing-user.dto';
 import { NewUserDTO } from 'src/user/dto/new-user.dto';
+import { UpdateUserDTO } from 'src/user/dto/update-user.dto';
 import { IUser } from 'src/user/user.interface';
 import { UserDocument } from 'src/user/user.schema';
 import { AuthService } from './auth.service';
@@ -34,7 +35,7 @@ export class AuthController {
     @Roles('user', 'admin')
     @UseGuards(JwtGuard, RoleGuard)
     @Patch()
-    update(@CurrentUser('id') id: string, @Body('username') username: string): Promise<UserDocument> {
-        return this.authService.update(id, username);
+    update(@CurrentUser('id') id: string, @Body() data: UpdateUserDTO): Promise<UserDocument> {
+        return this.authService.updateProfile(id, data);
     }
 }

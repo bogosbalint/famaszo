@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { ExistingUserDTO } from 'src/user/dto/existing-user.dto';
 import { NewUserDTO } from 'src/user/dto/new-user.dto';
+import { UpdateUserDTO } from 'src/user/dto/update-user.dto';
 import { IUser } from 'src/user/user.interface';
 import { UserDocument } from 'src/user/user.schema';
 import { UserService } from 'src/user/user.service';
@@ -14,9 +15,13 @@ export class AuthService {
     async register(user: Readonly<NewUserDTO>): Promise<IUser | any> {
         const {username, email, password} = user;
 
-        const existingUser = await this.userService.findByEmail(email);
+        const existingUsername = await this.userService.findByUsername(username);
 
-        if(existingUser) return 'Email taken.';
+        if(existingUsername) return 'This username has taken';
+
+        const existingEmail = await this.userService.findByEmail(email);
+
+        if(existingEmail) return 'This email has taken';
         
         const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -56,7 +61,7 @@ export class AuthService {
         return this.userService.findByEmail(email);
     }
 
-    async update(id: string, username: string): Promise<UserDocument> {
-        return this.userService.update(id, username);
+    async updateProfile(id: string, data: UpdateUserDTO): Promise<UserDocument> {
+        return this.userService.update(id, data);
     }
 }

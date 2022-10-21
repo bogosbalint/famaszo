@@ -5,6 +5,7 @@ import { RoleGuard } from 'src/auth/guards/roles.guard';
 import { IUser } from './user.interface';
 import { UserDocument } from './user.schema';
 import { UserService } from './user.service';
+import { UpdateUserDTO } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -27,8 +28,8 @@ export class UserController {
     @Roles('admin')
     @UseGuards(JwtGuard, RoleGuard)
     @Patch(':id')
-    update(@Param('id') id: string, @Body('username') username: string): Promise<UserDocument> {
-        return this.userService.update(id, username);
+    update(@Param('id') id: string, @Body() data: UpdateUserDTO): Promise<UserDocument> {
+        return this.userService.update(id, data);
     }
 
     @Roles('admin')
