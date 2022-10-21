@@ -8,10 +8,12 @@ import { QuestionsModule } from './questions/questions.module';
 import { ScoreModule } from './score/score.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RoleGuard } from './auth/guards/roles.guard';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/famaszo'),
+    ConfigModule.forRoot(),
     UserModule,
     AuthModule,
     QuestionsModule,
@@ -20,10 +22,6 @@ import { RoleGuard } from './auth/guards/roles.guard';
   controllers: [AppController],
   providers: [
     AppService,
-    /*{
-      provide: APP_GUARD,
-      useClass: RoleGuard,
-    },*/
   ],
 })
 export class AppModule {}
