@@ -13,14 +13,13 @@ export class QuestionsService {
         private readonly userService: UserService
     ) {}
 
-    async create(createQuestion: CreateQuestionDTO): Promise<QuestionDocument> {
-        const {question, answer, user_id} = createQuestion;
+    async create(user_id: string, createQuestion: CreateQuestionDTO): Promise<QuestionDocument> {
+        const {question, answer} = createQuestion;
 
         const bool = await this.userService.isTheUserExists(user_id);
         
-        if(!bool) {
-            throw new HttpException('This user does not exists', HttpStatus.FORBIDDEN)
-        }
+        if(!bool) throw new Error('This user does not exists');
+        
         const newQuestion = new this.questionModel({ question, answer, user_id });
 
         return newQuestion.save();

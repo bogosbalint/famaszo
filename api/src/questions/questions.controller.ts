@@ -6,6 +6,7 @@ import { UpdateQuestionDTO } from './dto/update-question.dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { RoleGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 
 @Controller('questions')
 export class QuestionsController {
@@ -15,8 +16,8 @@ export class QuestionsController {
     @Roles('user', 'admin')
     @UseGuards(JwtGuard, RoleGuard)
     @Post()
-    createQuestion(@Body() question: CreateQuestionDTO): Promise<QuestionDocument> {
-        return this.questionService.create(question);
+    createQuestion(@CurrentUser('id') id: string, @Body() question: CreateQuestionDTO): Promise<QuestionDocument> {
+        return this.questionService.create(id, question);
     }
 
     @Roles('user', 'admin')
