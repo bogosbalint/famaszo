@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { RoleGuard } from 'src/auth/guards/roles.guard';
+import { jwtConfig } from 'src/config/jwt.config';
 import { UserModule } from 'src/user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -13,10 +14,7 @@ import { LocalStrategy } from './strategies/local.strategy';
   imports: [
     UserModule, 
     PassportModule,
-    JwtModule.register({
-    secret: 'secret',
-    signOptions: {expiresIn: '3600s'},
-  }),
+    JwtModule.registerAsync(jwtConfig),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtGuard, JwtStrategy, RoleGuard]

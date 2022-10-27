@@ -6,19 +6,22 @@ import { UpdateQuestionDTO } from './dto/update-question.dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { RoleGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 
 @Controller('questions')
 export class QuestionsController {
 
     constructor(private questionService: QuestionsService) {}
     
+    //CREATE
     @Roles('user', 'admin')
     @UseGuards(JwtGuard, RoleGuard)
     @Post()
-    createQuestion(@Body() question: CreateQuestionDTO): Promise<QuestionDocument> {
-        return this.questionService.create(question);
+    createQuestion(@CurrentUser('id') id: string, @Body() question: CreateQuestionDTO): Promise<QuestionDocument> {
+        return this.questionService.create(id, question);
     }
 
+    //BROWSE
     @Roles('user', 'admin')
     @UseGuards(JwtGuard, RoleGuard)
     @Get()
@@ -26,19 +29,30 @@ export class QuestionsController {
         return this.questionService.findAll();
     }
     
+    //READ
     @Get(':id')
     getQuestion(@Param('id') id: string): Promise<QuestionDocument> {
         return this.questionService.findById(id);
     }
 
-    @Roles('user', 'admin')
+    //UPDATE
+    @Roles('admin')
     @UseGuards(JwtGuard, RoleGuard)
     @Patch(':id')
-    update(@Param('id') id: string, @Body('question') question: UpdateQuestionDTO): Promise<QuestionDocument> {
+    update(@Param('id') id: string, @Body() question: UpdateQuestionDTO): Promise<QuestionDocument> {
         return this.questionService.update(id, question);
     }
 
+    //UPDATE OWN
     @Roles('user', 'admin')
+    @UseGuards(JwtGuard, RoleGuard)
+    @Patch('updateOwn/:id')
+    updateOwn(@Param('id') id: string, @CurrentUser('id') user_id: string, @Body() question: UpdateQuestionDTO): Promise<QuestionDocument> {
+        return this.questionService.updateOwn(user_id, id, question);
+    }
+
+    //DELETE
+    @Roles('admin')
     @UseGuards(JwtGuard, RoleGuard)
     @Delete(':id')
     deleteQuestion(@Param('id') id: string) {
