@@ -11,16 +11,19 @@ export class ScoreController {
 
     constructor(private scoreService: ScoreService) {}
 
+    //CREATE
     @Post()
     createScore(@Body() score: CreateScoreDTO): Promise<ScoreDocument> {
         return this.scoreService.create(score);
     }
 
+    //BROWSE
     @Get()
     getAllScore(): Promise<ScoreDocument[]>  {
         return this.scoreService.findAll();
     }
 
+    //READ
     @Roles('user', 'admin')
     @UseGuards(JwtGuard, RoleGuard)
     @Get(':id')
@@ -29,6 +32,7 @@ export class ScoreController {
         return this.scoreService.findById(id);
     }
 
+    //UPDATE
     @Roles('admin')
     @UseGuards(JwtGuard, RoleGuard)
     @Patch(':id')
@@ -36,6 +40,7 @@ export class ScoreController {
         return this.scoreService.update(id, username);
     }
 
+    //DELETE
     @Roles('admin')
     @UseGuards(JwtGuard, RoleGuard)
     @Delete(':id')

@@ -5,6 +5,7 @@ import { UpdateUserDTO } from './dto/update-user.dto';
 import { IUser } from './user.interface';
 import { User, UserDocument } from './user.schema';
 import * as bcrypt from 'bcrypt';
+import { Role } from 'src/roles/roles.enum';
 
 @Injectable()
 export class UserService {
@@ -66,6 +67,15 @@ export class UserService {
             throw new Error('This username has taken');
 
         if(data.username) user.username = data.username;
+
+        return user.save();
+    }
+
+    async updateRole(id: string, roles: Role[]): Promise<UserDocument> {
+        const user = await this.userModel.findById(id).exec();
+
+        if(!user) throw new Error('User not found');
+        if(roles) user.roles = roles;
 
         return user.save();
     }
